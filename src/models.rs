@@ -1,20 +1,22 @@
-use diesel::prelude::*;
+use serde::{Serialize, Deserialize};
 
+use diesel::prelude::*;
 use crate::schema::users;
 
-#[derive(Queryable)]
+#[derive(Debug, Clone, Deserialize, Serialize, Queryable)]
+#[serde(crate = "rocket::serde")]
 pub struct User {
-    pub id: i32,
+    pub id: Option<i32>,
     pub name: String,
     pub location: String,
     pub title: String,
 }
 
-
-#[derive(Insertable)]
+#[derive(Debug, Clone, Deserialize, Serialize, Insertable)]
+#[serde(crate = "rocket::serde")]
 #[diesel(table_name = users)]
-pub struct NewUser<'a> {
-    pub name: &'a str,
-    pub location: &'a str,
-    pub title: &'a str,
+pub struct NewUser {
+    pub name: String,
+    pub location: String,
+    pub title: String,
 }
