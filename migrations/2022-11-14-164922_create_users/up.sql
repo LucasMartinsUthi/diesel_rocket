@@ -1,5 +1,5 @@
 -- Your SQL goes here
-CREATE TABLE users (
+CREATE TABLE IF NOT EXISTS users (
   id SERIAL PRIMARY KEY,
   name VARCHAR NOT NULL,
   location VARCHAR NOT NULL,

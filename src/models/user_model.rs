@@ -1,6 +1,6 @@
 use rocket::serde::{Deserialize, Serialize};
 
-use diesel::{Insertable, Queryable};
+use diesel::{Insertable, Queryable, AsChangeset};
 
 use crate::schema::users;
 
@@ -20,4 +20,11 @@ pub struct NewUser {
     pub name: String,
     pub location: String,
     pub title: String,
+}
+
+#[derive(Deserialize, AsChangeset, Debug)]
+#[serde(crate = "rocket::serde")]
+#[table_name = "users"]
+pub struct UpdateUser {
+    pub name: String,
 }

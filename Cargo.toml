@@ -7,7 +7,6 @@ edition = "2021"
 
 [dependencies]
 diesel = { version = "1.4.7", features = ["postgres"] }
-dotenvy = "0.15"
 serde = {version = "1.0.130", features = ["derive"]}
 
 [dependencies.rocket]

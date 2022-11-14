@@ -29,6 +29,12 @@ impl ApiErrorResponse {
             message: message.to_string(),
         }))
     }
+
+    pub fn validation_error(message: &str) -> ApiError {
+        ApiError::ValidationError(Json(ApiErrorResponse {
+            message: message.to_string(),
+        }))
+    }
 }
 
 #[derive(Responder, Debug)]
