@@ -58,14 +58,13 @@ cargo watch -x run
 }
 
 //Returns created user
-[
-    {
-        "id": 3
-        "name": "Marvin",
-        "location": "Mars",
-        "title": "Alien"
-    }
-]
+
+{
+    "id": 3
+    "name": "Marvin",
+    "location": "Mars",
+    "title": "Alien"
+}
 ```
 
 #### localhost:8000/users/1
@@ -74,14 +73,13 @@ cargo watch -x run
 //GET
 
 //Returns user by id
-[
-    {
-        "id": 1,
-        "name": "Lucas",
-        "location": "Brazil",
-        "title": "Dev"
-    }
-]
+
+{
+    "id": 1,
+    "name": "Lucas",
+    "location": "Brazil",
+    "title": "Dev"
+}
 ```
 
 #### localhost:8000/users/1
@@ -94,14 +92,13 @@ cargo watch -x run
 }
 
 //Returns updated user
-[
-    {
-        "id": 1,
-        "name": "New Name",
-        "location": "Brazil",
-        "title": "Dev"
-    }
-]
+
+{
+    "id": 1,
+    "name": "New Name",
+    "location": "Brazil",
+    "title": "Dev"
+}
 ```
 
 #### localhost:8000/users/1
