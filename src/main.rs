@@ -1,14 +1,24 @@
-#[macro_use] extern crate rocket;
+use rocket::{
+    serde::json::Json,
+    catch, catchers
+};
 
-use diesel_rocket::{PgConnection};
+use diesel_demo::{
+    api::user_api::*,
+    ApiError, ApiErrorResponse, PgConnection
+};
 
-//TODO
-// mount user once
+#[catch(422)]
+fn unprocessable_entity() -> ApiError {
+    ApiError::ValidationError(Json(ApiErrorResponse {
+        message: "Unprocessable Entity".to_string(),
+    }))
+}
 
-#[launch]
+#[rocket::launch]
 fn rocket() -> _ {
     rocket::build()
         .attach(PgConnection::fairing())
-        // .mount("/", routes![create_user])
-        // .mount("/", routes![get_user])
+        .mount("/users", rocket::routes![list, create])
+        .register("/users", catchers![unprocessable_entity])
 }

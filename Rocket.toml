@@ -1,3 +1,2 @@
-[default.databases.db]
-url = "postgres://user:password@localhost:5432/db"
-timeout = 10
+[default.databases]
+db = { url = "postgres://user:password@localhost:5432/db" }
