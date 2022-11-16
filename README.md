@@ -1,10 +1,17 @@
-## Running the api
+## Dependencies
+
+#### Install Diesel
+```
+cargo install diesel_cli --no-default-features --features postgres
+```
 
 #### Install Cargo watch 
 
 ```
 cargo install cargo-watch
 ```
+
+## Running the api
 
 #### Run docker compose
 
