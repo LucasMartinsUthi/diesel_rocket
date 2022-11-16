@@ -18,17 +18,22 @@ use crate::{
 };
 
 #[rocket::get("/")]
-pub async fn list_all(conn: PgConnection, userCookie: UserCookie) -> Result<Json<Vec<User>>, ApiError> {    
-    let result = conn.run(|c| {
-        users::table.load(c)
+pub async fn list_all(user_cookie: UserCookie, conn: PgConnection)  -> Result<Json<Vec<User>>, ApiError> { 
+    
+    println!("user_cookie: {:?}", user_cookie);
+    
+    let result = conn.run(move |c| {
+        users::table
+            .find(user_cookie.0)
+            .get_result::<User>(c)
     }).await;
 
     match result {
         Ok(users) => {
-            if users.len() == 0 {
-                return Err(ApiErrorResponse::new("No users found"));
-            }
-            Ok(Json(users))
+            // if users.len() == 0 {
+            //     return Err(ApiErrorResponse::new("No users found"));
+            // }
+            Ok(Json(vec![users]))
         }
         Err(e) => Err(ApiErrorResponse::new(&e.to_string())),
     }
@@ -40,9 +45,8 @@ pub async fn no_auth() -> NoContent {
 }
 
 #[rocket::get("/login")]
-pub fn login(_user: UserCookie) -> NoContent {
-    // Redirect::to(uri!(list_all))
-    NoContent
+pub fn login(_user: UserCookie) -> Redirect {
+    Redirect::to(uri!(list_all))
 }
 
 #[rocket::post("/login", data = "<login>")]

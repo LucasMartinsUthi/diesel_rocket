@@ -5,18 +5,20 @@ use rocket::FromForm;
 
 use diesel::{Insertable, Queryable, AsChangeset};
 
+use rocket::http::{Cookie, CookieJar};
+
 use crate::schema::users;
 
 #[derive(Debug)]
-pub struct UserCookie(usize);
+pub struct UserCookie(pub i32);
 
 #[rocket::async_trait]
 impl<'r> FromRequest<'r> for UserCookie {
     type Error = std::convert::Infallible;
 
     async fn from_request(request: &'r Request<'_>) -> request::Outcome<UserCookie, Self::Error> {
-        request.cookies()
-            .get_private("user_id")
+        
+        request.cookies().get_private("user_id")
             .and_then(|cookie| cookie.value().parse().ok())
             .map(UserCookie)
             .or_forward(())
