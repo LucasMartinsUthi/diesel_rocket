@@ -16,5 +16,7 @@ fn rocket() -> _ {
     rocket::build()
         .attach(PgConnection::fairing())
         .mount("/", user_api::routes())
+        .mount("/", token_api::routes())
         .register("/", catchers![unprocessable_entity])
+        .register("/", token_api::catchers())
 }

@@ -5,8 +5,6 @@ use rocket::FromForm;
 
 use diesel::{Insertable, Queryable, AsChangeset};
 
-use rocket::http::{Cookie, CookieJar};
-
 use crate::schema::users;
 
 #[derive(Debug)]

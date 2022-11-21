@@ -9,8 +9,9 @@ use rocket::{
     serde::{
         Deserialize, Serialize, 
         json::Json
-    }
+    }, http::Status
 };
+use rocket::request::{FromRequest, Request, Outcome};
 use rocket_sync_db_pools::database;
 
 #[database("db")]
@@ -43,5 +44,27 @@ pub enum ApiError {
     StandardError(Json<ApiErrorResponse>),
     #[response(status = 422, content_type = "json")]
     ValidationError(Json<ApiErrorResponse>),
+    InvalidToken(Json<String>),
+}
+
+#[derive(Debug)]
+pub struct MonstaToken(pub String);
+
+#[rocket::async_trait]
+impl<'r> FromRequest<'r> for MonstaToken {
+    type Error = ApiError;
+
+    async fn from_request(request: &'r Request<'_>) -> Outcome<Self, Self::Error> {
+        fn is_valid(key: &str) -> bool {
+            key == "087FDE79-7B55-4C8C-A5D2-00768CFEB1B7"
+        }
+
+        match request.headers().get_one("X-Monsta-Token") {
+            Some(key) if is_valid(key) => Outcome::Success(MonstaToken(key.to_string())),
+            Some(_) => Outcome::Failure((Status::BadRequest, ApiError::InvalidToken(Json("Invalid Token".to_string())))),
+            None => Outcome::Failure((Status::BadRequest, ApiError::InvalidToken(Json("Missing 2 Token".to_string())))),
+        }
+    }
+            
 }
 
